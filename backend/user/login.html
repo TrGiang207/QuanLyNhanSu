@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng nhập - Quản lý nhân sự</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f2f5f9;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .login-box {
+            width: 400px;
+            background: white;
+            padding: 35px;
+            border-radius: 18px;
+            box-shadow: 0 10px 35px rgba(0,0,0,0.12);
+        }
+
+        .logo {
+            text-align: center;
+            font-size: 28px;
+            font-weight: bold;
+            color: #0b1f3a;
+            margin-bottom: 10px;
+        }
+
+        .title {
+            text-align: center;
+            color: #555;
+            margin-bottom: 30px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 18px;
+            font-size: 15px;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #0b1f3a;
+        }
+
+        button {
+            width: 100%;
+            padding: 13px;
+            border: none;
+            border-radius: 8px;
+            background: #0b1f3a;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #16365f;
+        }
+
+        .register {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .register a {
+            color: #0b1f3a;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        #message {
+            text-align: center;
+            margin-top: 15px;
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="login-box">
+
+    <div class="logo">
+        HR MANAGEMENT
+    </div>
+
+    <div class="title">
+        Đăng nhập hệ thống
+    </div>
+
+    <form id="loginForm">
+
+        <label>Tên đăng nhập</label>
+        <input
+            type="text"
+            id="TenDangNhap"
+            placeholder="Nhập tên đăng nhập"
+            required
+        >
+
+        <label>Mật khẩu</label>
+        <input
+            type="password"
+            id="MatKhau"
+            placeholder="Nhập mật khẩu"
+            required
+        >
+
+        <button type="submit">
+            ĐĂNG NHẬP
+        </button>
+
+    </form>
+
+    <div id="message"></div>
+
+    <div class="register">
+        Chưa có tài khoản?
+        <a href="register.html">Đăng ký</a>
+    </div>
+
+</div>
+
+
+<script>
+
+const API = "http://127.0.0.1:8000";
+
+document.getElementById("loginForm").addEventListener("submit", async function(e) {
+
+    e.preventDefault();
+
+    const TenDangNhap =
+        document.getElementById("TenDangNhap").value.trim();
+
+    const MatKhau =
+        document.getElementById("MatKhau").value.trim();
+
+    const message =
+        document.getElementById("message");
+
+    try {
+
+        const response = await fetch(
+            API + "/api/auth/login",
+            {
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+                    TenDangNhap: TenDangNhap,
+                    MatKhau: MatKhau
+                })
+            }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            message.textContent =
+                data.detail || "Đăng nhập thất bại";
+            return;
+        }
+
+        // Lưu thông tin đăng nhập
+        localStorage.setItem(
+            "user",
+            JSON.stringify(data)
+        );
+
+        // Nếu là Admin
+        if (data.VaiTro === "Admin") {
+            window.location.href =
+                "../admin/index.html";
+        }
+        else {
+            window.location.href =
+                "index.html";
+        }
+
+    }
+    catch (error) {
+
+        message.textContent =
+            "Không thể kết nối đến API";
+
+        console.error(error);
+    }
+
+});
+
+</script>
+
+</body>
+</html>

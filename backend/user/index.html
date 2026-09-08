@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HR Management</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f7fb;
+            color: #222;
+        }
+
+        /* NAVBAR */
+        .navbar-custom {
+            height: 70px;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 7%;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: bold;
+            color: #102a43;
+        }
+
+        .logo span {
+            color: #1976d2;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .nav-right a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .btn-logout {
+            border: none;
+            background: #102a43;
+            color: white;
+            padding: 10px 18px;
+            border-radius: 8px;
+        }
+
+        /* HERO */
+        .hero {
+            min-height: 390px;
+            background: #102a43;
+            color: white;
+            display: flex;
+            align-items: center;
+            padding: 50px 8%;
+        }
+
+        .hero-content {
+            max-width: 650px;
+        }
+
+        .hero h1 {
+            font-size: 46px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            line-height: 1.7;
+            color: #d9e2ec;
+        }
+
+        .btn-primary-custom {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 13px 25px;
+            background: #1976d2;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+        }
+
+        /* INFORMATION CARD */
+        .main-container {
+            width: 84%;
+            margin: -60px auto 50px;
+            position: relative;
+        }
+
+        .employee-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+        }
+
+        .employee-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .employee-header h2 {
+            margin: 0;
+            color: #102a43;
+        }
+
+        .status {
+            background: #d9f7e8;
+            color: #16804b;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .info-box {
+            background: #f5f7fb;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .info-box small {
+            color: #777;
+            display: block;
+            margin-bottom: 7px;
+        }
+
+        .info-box strong {
+            color: #102a43;
+            font-size: 16px;
+        }
+
+        /* FEATURES */
+        .section-title {
+            text-align: center;
+            margin: 50px 0 30px;
+        }
+
+        .section-title h2 {
+            color: #102a43;
+            font-weight: bold;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 30px;
+            border-radius: 14px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.07);
+            transition: 0.2s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            width: 65px;
+            height: 65px;
+            margin: 0 auto 18px;
+            border-radius: 50%;
+            background: #e7f1fb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+        }
+
+        .feature-card h4 {
+            color: #102a43;
+            margin-bottom: 10px;
+        }
+
+        .feature-card p {
+            color: #777;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .feature-card a {
+            display: inline-block;
+            margin-top: 10px;
+            text-decoration: none;
+            color: #1976d2;
+            font-weight: bold;
+        }
+
+        /* FOOTER */
+        footer {
+            margin-top: 70px;
+            background: #102a43;
+            color: white;
+            text-align: center;
+            padding: 25px;
+        }
+
+        /* MOBILE */
+        @media (max-width: 900px) {
+            .info-grid,
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero h1 {
+                font-size: 35px;
+            }
+
+            .nav-right a {
+                display: none;
+            }
+
+            .main-container {
+                width: 92%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar-custom">
+        <div class="logo">
+            HR<span>Manager</span>
+        </div>
+
+        <div class="nav-right">
+            <a href="index.html">Trang chủ</a>
+            <a href="profile.html">Hồ sơ</a>
+            <a href="luong.html">Bảng lương</a>
+
+            <button class="btn-logout" onclick="dangXuat()">
+                Đăng xuất
+            </button>
+        </div>
+    </nav>
+
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-content">
+
+            <h1>
+                Quản lý nhân sự<br>
+                đơn giản và hiệu quả
+            </h1>
+
+            <p>
+                Hệ thống giúp nhân viên dễ dàng xem thông tin cá nhân,
+                phòng ban, chức vụ và theo dõi bảng lương của mình.
+            </p>
+
+            <a href="profile.html" class="btn-primary-custom">
+                Xem hồ sơ của tôi
+            </a>
+
+        </div>
+    </section>
+
+
+    <!-- MAIN -->
+    <div class="main-container">
+
+        <!-- EMPLOYEE -->
+        <div class="employee-card">
+
+            <div class="employee-header">
+
+                <div>
+                    <h2 id="hoTen">
+                        Đang tải...
+                    </h2>
+
+                    <p id="maNV">
+                        Mã nhân viên: ...
+                    </p>
+                </div>
+
+                <span class="status" id="trangThai">
+                    Đang tải...
+                </span>
+
+            </div>
+
+
+            <div class="info-grid">
+
+                <div class="info-box">
+                    <small>Phòng ban</small>
+                    <strong id="phongBan">
+                        ...
+                    </strong>
+                </div>
+
+                <div class="info-box">
+                    <small>Chức vụ</small>
+                    <strong id="chucVu">
+                        ...
+                    </strong>
+                </div>
+
+                <div class="info-box">
+                    <small>Email</small>
+                    <strong id="email">
+                        ...
+                    </strong>
+                </div>
+
+                <div class="info-box">
+                    <small>Số điện thoại</small>
+                    <strong id="soDienThoai">
+                        ...
+                    </strong>
+                </div>
+
+                <div class="info-box">
+                    <small>Ngày vào làm</small>
+                    <strong id="ngayVaoLam">
+                        ...
+                    </strong>
+                </div>
+
+                <div class="info-box">
+                    <small>Lương cơ bản</small>
+                    <strong id="luongCoBan">
+                        ...
+                    </strong>
+                </div>
+
+            </div>
+        </div>
+
+
+        <!-- FEATURES -->
+        <div class="section-title">
+            <h2>Chức năng dành cho nhân viên</h2>
+            <p>
+                Các chức năng quản lý thông tin cá nhân
+            </p>
+        </div>
+
+
+        <div class="feature-grid">
+
+            <div class="feature-card">
+
+                <div class="feature-icon">
+                    👤
+                </div>
+
+                <h4>Hồ sơ cá nhân</h4>
+
+                <p>
+                    Xem thông tin cá nhân, phòng ban,
+                    chức vụ và thông tin liên hệ.
+                </p>
+
+                <a href="profile.html">
+                    Xem hồ sơ →
+                </a>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon">
+                    💰
+                </div>
+
+                <h4>Bảng lương</h4>
+
+                <p>
+                    Theo dõi lương cơ bản, phụ cấp,
+                    thưởng, khấu trừ và thực lĩnh.
+                </p>
+
+                <a href="luong.html">
+                    Xem bảng lương →
+                </a>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon">
+                    📄
+                </div>
+
+                <h4>Hợp đồng</h4>
+
+                <p>
+                    Theo dõi thông tin hợp đồng
+                    lao động của nhân viên.
+                </p>
+
+                <a href="profile.html">
+                    Xem thông tin →
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- FOOTER -->
+    <footer>
+        <p>© 2026 HRManager - Hệ thống quản lý nhân sự</p>
+    </footer>
+
+
+    <script>
+
+        const API = "http://127.0.0.1:8000";
+
+        // Lấy thông tin tài khoản đã đăng nhập
+        const user = JSON.parse(localStorage.getItem("user"));
+
+        // Nếu chưa đăng nhập
+        if (!user) {
+            window.location.href = "login.html";
+        }
+
+
+        async function loadNhanVien() {
+
+            if (!user || !user.MaNhanVien) {
+                document.getElementById("hoTen").innerText =
+                    "Tài khoản quản trị";
+
+                document.getElementById("maNV").innerText =
+                    "Không liên kết nhân viên";
+
+                document.getElementById("trangThai").innerText =
+                    "Admin";
+
+                return;
+            }
+
+
+            try {
+
+                const response = await fetch(
+                    `${API}/api/nhanvien/${user.MaNhanVien}`
+                );
+
+                if (!response.ok) {
+                    throw new Error("Không lấy được thông tin nhân viên");
+                }
+
+                const result = await response.json();
+
+                // API có thể trả trực tiếp object
+                // hoặc trả về dạng {data: object}
+                const nv = result.data || result;
+
+
+                document.getElementById("hoTen").innerText =
+                    nv.HoTen || "Chưa cập nhật";
+
+                document.getElementById("maNV").innerText =
+                    "Mã nhân viên: " + (nv.MaNV || "");
+
+                document.getElementById("phongBan").innerText =
+                    nv.TenPhongBan || "Chưa cập nhật";
+
+                document.getElementById("chucVu").innerText =
+                    nv.TenChucVu || "Chưa cập nhật";
+
+                document.getElementById("email").innerText =
+                    nv.Email || "Chưa cập nhật";
+
+                document.getElementById("soDienThoai").innerText =
+                    nv.SoDienThoai || "Chưa cập nhật";
+
+                document.getElementById("ngayVaoLam").innerText =
+                    formatDate(nv.NgayVaoLam);
+
+                document.getElementById("luongCoBan").innerText =
+                    formatMoney(nv.LuongCoBan);
+
+                document.getElementById("trangThai").innerText =
+                    nv.TrangThai
+                        ? "Đang làm việc"
+                        : "Nghỉ việc";
+
+            }
+            catch (error) {
+
+                console.error(error);
+
+                document.getElementById("hoTen").innerText =
+                    "Không thể tải dữ liệu";
+
+                alert("Không thể kết nối đến API nhân viên.");
+
+            }
+        }
+
+
+        function formatDate(date) {
+
+            if (!date) {
+                return "Chưa cập nhật";
+            }
+
+            const d = new Date(date);
+
+            return d.toLocaleDateString("vi-VN");
+        }
+
+
+        function formatMoney(number) {
+
+            if (number === null || number === undefined) {
+                return "0 VNĐ";
+            }
+
+            return Number(number).toLocaleString("vi-VN") + " VNĐ";
+        }
+
+
+        function dangXuat() {
+
+            localStorage.removeItem("user");
+
+            window.location.href = "login.html";
+        }
+
+
+        loadNhanVien();
+
+    </script>
+
+</body>
+</html>

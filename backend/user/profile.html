@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Hồ sơ cá nhân - HRManager</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f7fb;
+        }
+
+        /* NAVBAR */
+        .navbar {
+            height: 70px;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 7%;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: bold;
+            color: #102a43;
+        }
+
+        .logo span {
+            color: #1976d2;
+        }
+
+        .menu {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .menu a {
+            text-decoration: none;
+            color: #333;
+        }
+
+        .logout {
+            border: none;
+            background: #102a43;
+            color: white;
+            padding: 10px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        /* HEADER */
+        .page-header {
+            background: #102a43;
+            color: white;
+            padding: 50px 8%;
+        }
+
+        .page-header h1 {
+            margin: 0 0 10px;
+            font-size: 38px;
+        }
+
+        .page-header p {
+            color: #d9e2ec;
+            margin: 0;
+        }
+
+        /* CONTENT */
+        .container {
+            width: 84%;
+            margin: 40px auto;
+        }
+
+        .profile-card {
+            background: white;
+            border-radius: 15px;
+            padding: 35px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        .profile-top {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .avatar {
+            width: 80px;
+            height: 80px;
+            background: #1976d2;
+            color: white;
+            border-radius: 50%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 32px;
+            font-weight: bold;
+        }
+
+        .profile-top h2 {
+            margin: 0 0 8px;
+            color: #102a43;
+        }
+
+        .profile-top p {
+            margin: 0;
+            color: #777;
+        }
+
+        .status {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 6px 13px;
+            border-radius: 20px;
+            background: #d9f7e8;
+            color: #16804b;
+            font-size: 13px;
+        }
+
+        /* INFORMATION */
+        .section-title {
+            color: #102a43;
+            margin: 30px 0 20px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .info-item {
+            background: #f5f7fb;
+            padding: 18px;
+            border-radius: 10px;
+        }
+
+        .info-item label {
+            display: block;
+            color: #777;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .info-item strong {
+            color: #102a43;
+        }
+
+        /* BUTTON */
+        .buttons {
+            margin-top: 30px;
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 12px 22px;
+            border-radius: 8px;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: #1976d2;
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #e9eef5;
+            color: #102a43;
+        }
+
+        /* FOOTER */
+        footer {
+            margin-top: 70px;
+            background: #102a43;
+            color: white;
+            text-align: center;
+            padding: 25px;
+        }
+
+        @media (max-width: 800px) {
+
+            .menu a {
+                display: none;
+            }
+
+            .container {
+                width: 92%;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .page-header h1 {
+                font-size: 30px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+
+        <div class="logo">
+            HR<span>Manager</span>
+        </div>
+
+        <div class="menu">
+
+            <a href="index.html">
+                Trang chủ
+            </a>
+
+            <a href="profile.html">
+                Hồ sơ
+            </a>
+
+            <a href="luong.html">
+                Bảng lương
+            </a>
+
+            <button class="logout" onclick="dangXuat()">
+                Đăng xuất
+            </button>
+
+        </div>
+
+    </nav>
+
+
+    <!-- HEADER -->
+    <div class="page-header">
+
+        <h1>Hồ sơ cá nhân</h1>
+
+        <p>
+            Thông tin chi tiết của nhân viên
+        </p>
+
+    </div>
+
+
+    <!-- CONTENT -->
+    <div class="container">
+
+        <div class="profile-card">
+
+            <!-- TOP -->
+            <div class="profile-top">
+
+                <div class="avatar" id="avatar">
+                    NV
+                </div>
+
+                <div>
+
+                    <h2 id="hoTen">
+                        Đang tải...
+                    </h2>
+
+                    <p id="maNV">
+                        Mã nhân viên: ...
+                    </p>
+
+                    <span class="status" id="trangThai">
+                        ...
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- THÔNG TIN CÁ NHÂN -->
+            <h3 class="section-title">
+                Thông tin cá nhân
+            </h3>
+
+            <div class="info-grid">
+
+                <div class="info-item">
+                    <label>Họ và tên</label>
+                    <strong id="infoHoTen">...</strong>
+                </div>
+
+                <div class="info-item">
+                    <label>Mã nhân viên</label>
+                    <strong id="infoMaNV">...</strong>
+                </div>
+
+                <div class="info-item">
+                    <label>Ngày sinh</label>
+                    <strong id="ngaySinh">...</strong>
+                </div>
+
+                <div class="info-item">
+                    <label>Giới tính</label>
+                    <strong id="gioiTinh">...</strong>
+                </div>
+
+                <div class="info-item">
+                    <label>Số điện thoại</label>
+                    <strong id="soDienThoai">...</strong>
+                </div>
+
+                <div class="info-item">
+                    <label>Email</label>
+                    <strong id="email">...</strong>
+                </div>
+
+                <div class="info-item">
+                    <label>Địa chỉ</label>
+                    <strong id="diaChi">...</strong>
+                </div>
+
+                <div class="info-item">
+                    <label>Ngày vào làm</label>
+                    <strong id="ngayVaoLam">...</strong>
+                </div>
+
+            </div>
+
+
+            <!-- THÔNG TIN CÔNG VIỆC -->
+            <h3 class="section-title">
+                Thông tin công việc
+            </h3>
+
+            <div class="info-grid">
+
+                <div class="info-item">
+                    <label>Phòng ban</label>
+                    <strong id="phongBan">...</strong>
+                </div>
+
+                <div class="info-item">
+                    <label>Chức vụ</label>
+                    <strong id="chucVu">...</strong>
+                </div>
+
+                <div class="info-item">
+                    <label>Lương cơ bản</label>
+                    <strong id="luongCoBan">...</strong>
+                </div>
+
+                <div class="info-item">
+                    <label>Trạng thái</label>
+                    <strong id="trangThai2">...</strong>
+                </div>
+
+            </div>
+
+
+            <!-- BUTTON -->
+            <div class="buttons">
+
+                <a href="luong.html"
+                   class="btn btn-primary">
+                    Xem bảng lương
+                </a>
+
+                <a href="index.html"
+                   class="btn btn-secondary">
+                    Quay lại
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- FOOTER -->
+    <footer>
+
+        © 2026 HRManager - Hệ thống quản lý nhân sự
+
+    </footer>
+
+
+    <script>
+
+        const API = "http://127.0.0.1:8000";
+
+        // Lấy tài khoản đăng nhập
+        const user = JSON.parse(
+            localStorage.getItem("user")
+        );
+
+
+        // Chưa đăng nhập
+        if (!user) {
+
+            window.location.href = "login.html";
+
+        }
+
+
+        async function loadProfile() {
+
+            if (!user || !user.MaNhanVien) {
+
+                alert("Tài khoản chưa được liên kết với nhân viên.");
+
+                window.location.href = "index.html";
+
+                return;
+
+            }
+
+
+            try {
+
+                const response = await fetch(
+                    `${API}/api/nhanvien/${user.MaNhanVien}`
+                );
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        "Không lấy được dữ liệu"
+                    );
+
+                }
+
+
+                const result = await response.json();
+
+                const nv = result.data || result;
+
+
+                // Tên
+                document.getElementById("hoTen").innerText =
+                    nv.HoTen || "Chưa cập nhật";
+
+                document.getElementById("infoHoTen").innerText =
+                    nv.HoTen || "Chưa cập nhật";
+
+
+                // Mã nhân viên
+                document.getElementById("maNV").innerText =
+                    "Mã nhân viên: " + (nv.MaNV || "");
+
+                document.getElementById("infoMaNV").innerText =
+                    nv.MaNV || "Chưa cập nhật";
+
+
+                // Avatar
+                if (nv.HoTen) {
+
+                    document.getElementById("avatar")
+                        .innerText =
+                        nv.HoTen
+                            .trim()
+                            .charAt(0)
+                            .toUpperCase();
+
+                }
+
+
+                // Ngày sinh
+                document.getElementById("ngaySinh").innerText =
+                    formatDate(nv.NgaySinh);
+
+
+                // Giới tính
+                document.getElementById("gioiTinh").innerText =
+                    nv.GioiTinh || "Chưa cập nhật";
+
+
+                // Điện thoại
+                document.getElementById("soDienThoai").innerText =
+                    nv.SoDienThoai || "Chưa cập nhật";
+
+
+                // Email
+                document.getElementById("email").innerText =
+                    nv.Email || "Chưa cập nhật";
+
+
+                // Địa chỉ
+                document.getElementById("diaChi").innerText =
+                    nv.DiaChi || "Chưa cập nhật";
+
+
+                // Ngày vào làm
+                document.getElementById("ngayVaoLam").innerText =
+                    formatDate(nv.NgayVaoLam);
+
+
+                // Phòng ban
+                document.getElementById("phongBan").innerText =
+                    nv.TenPhongBan || "Chưa cập nhật";
+
+
+                // Chức vụ
+                document.getElementById("chucVu").innerText =
+                    nv.TenChucVu || "Chưa cập nhật";
+
+
+                // Lương
+                document.getElementById("luongCoBan").innerText =
+                    formatMoney(nv.LuongCoBan);
+
+
+                // Trạng thái
+                const status =
+                    nv.TrangThai
+                        ? "Đang làm việc"
+                        : "Nghỉ việc";
+
+
+                document.getElementById("trangThai").innerText =
+                    status;
+
+                document.getElementById("trangThai2").innerText =
+                    status;
+
+            }
+            catch (error) {
+
+                console.error(error);
+
+                alert(
+                    "Không thể kết nối đến API."
+                );
+
+            }
+
+        }
+
+
+        function formatDate(date) {
+
+            if (!date) {
+
+                return "Chưa cập nhật";
+
+            }
+
+            return new Date(date)
+                .toLocaleDateString("vi-VN");
+
+        }
+
+
+        function formatMoney(number) {
+
+            if (
+                number === null ||
+                number === undefined
+            ) {
+
+                return "0 VNĐ";
+
+            }
+
+            return Number(number)
+                .toLocaleString("vi-VN")
+                + " VNĐ";
+
+        }
+
+
+        function dangXuat() {
+
+            localStorage.removeItem("user");
+
+            window.location.href =
+                "login.html";
+
+        }
+
+
+        loadProfile();
+
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Bảng lương - HRManager</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f7fb;
+            color: #222;
+        }
+
+        /* NAVBAR */
+        .navbar {
+            height: 70px;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 7%;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: bold;
+            color: #102a43;
+        }
+
+        .logo span {
+            color: #1976d2;
+        }
+
+        .menu {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .menu a {
+            text-decoration: none;
+            color: #333;
+        }
+
+        .logout {
+            border: none;
+            background: #102a43;
+            color: white;
+            padding: 10px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        /* HEADER */
+        .page-header {
+            background: #102a43;
+            color: white;
+            padding: 50px 8%;
+        }
+
+        .page-header h1 {
+            margin: 0 0 10px;
+            font-size: 38px;
+        }
+
+        .page-header p {
+            margin: 0;
+            color: #d9e2ec;
+        }
+
+        /* CONTENT */
+        .container {
+            width: 88%;
+            margin: 40px auto;
+        }
+
+        /* FILTER */
+        .filter-box {
+            background: white;
+            padding: 25px;
+            border-radius: 14px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.07);
+            margin-bottom: 25px;
+        }
+
+        .filter-box h3 {
+            margin-top: 0;
+            color: #102a43;
+        }
+
+        .filter {
+            display: flex;
+            gap: 15px;
+            align-items: end;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            margin-bottom: 7px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .form-group select {
+            width: 150px;
+            padding: 11px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+
+        .btn-search {
+            padding: 11px 22px;
+            border: none;
+            border-radius: 8px;
+            background: #1976d2;
+            color: white;
+            cursor: pointer;
+        }
+
+        /* SUMMARY */
+        .summary {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .summary-card {
+            background: white;
+            padding: 25px;
+            border-radius: 14px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.07);
+        }
+
+        .summary-card small {
+            color: #777;
+        }
+
+        .summary-card h2 {
+            margin: 10px 0 0;
+            color: #102a43;
+        }
+
+        .summary-card.highlight h2 {
+            color: #1976d2;
+        }
+
+        /* TABLE */
+        .table-card {
+            background: white;
+            padding: 25px;
+            border-radius: 14px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.07);
+            overflow-x: auto;
+        }
+
+        .table-card h3 {
+            color: #102a43;
+            margin-top: 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 850px;
+        }
+
+        th {
+            background: #102a43;
+            color: white;
+            padding: 14px 10px;
+            text-align: center;
+        }
+
+        td {
+            padding: 14px 10px;
+            border-bottom: 1px solid #eee;
+            text-align: center;
+        }
+
+        tr:hover {
+            background: #f5f7fb;
+        }
+
+        .money {
+            text-align: right;
+            white-space: nowrap;
+        }
+
+        .total-money {
+            color: #1976d2;
+            font-weight: bold;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 40px;
+            color: #777;
+        }
+
+        /* PAGINATION */
+        .pagination {
+            margin-top: 25px;
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .pagination button {
+            border: 1px solid #ddd;
+            background: white;
+            padding: 8px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .pagination button.active {
+            background: #1976d2;
+            color: white;
+            border-color: #1976d2;
+        }
+
+        /* FOOTER */
+        footer {
+            margin-top: 70px;
+            background: #102a43;
+            color: white;
+            text-align: center;
+            padding: 25px;
+        }
+
+        @media (max-width: 800px) {
+
+            .menu a {
+                display: none;
+            }
+
+            .container {
+                width: 94%;
+            }
+
+            .summary {
+                grid-template-columns: 1fr;
+            }
+
+            .filter {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+
+        <div class="logo">
+            HR<span>Manager</span>
+        </div>
+
+        <div class="menu">
+
+            <a href="index.html">
+                Trang chủ
+            </a>
+
+            <a href="profile.html">
+                Hồ sơ
+            </a>
+
+            <a href="luong.html">
+                Bảng lương
+            </a>
+
+            <button class="logout" onclick="dangXuat()">
+                Đăng xuất
+            </button>
+
+        </div>
+
+    </nav>
+
+
+    <!-- HEADER -->
+    <div class="page-header">
+
+        <h1>Bảng lương</h1>
+
+        <p>
+            Theo dõi thông tin lương của bạn
+        </p>
+
+    </div>
+
+
+    <div class="container">
+
+        <!-- BỘ LỌC -->
+        <div class="filter-box">
+
+            <h3>Tìm kiếm bảng lương</h3>
+
+            <div class="filter">
+
+                <div class="form-group">
+
+                    <label>Tháng</label>
+
+                    <select id="thang">
+
+                        <option value="">
+                            Tất cả
+                        </option>
+
+                        <option value="1">Tháng 1</option>
+                        <option value="2">Tháng 2</option>
+                        <option value="3">Tháng 3</option>
+                        <option value="4">Tháng 4</option>
+                        <option value="5">Tháng 5</option>
+                        <option value="6">Tháng 6</option>
+                        <option value="7">Tháng 7</option>
+                        <option value="8">Tháng 8</option>
+                        <option value="9">Tháng 9</option>
+                        <option value="10">Tháng 10</option>
+                        <option value="11">Tháng 11</option>
+                        <option value="12">Tháng 12</option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>Năm</label>
+
+                    <select id="nam">
+
+                        <option value="">
+                            Tất cả
+                        </option>
+
+                        <option value="2026">
+                            2026
+                        </option>
+
+                        <option value="2025">
+                            2025
+                        </option>
+
+                        <option value="2024">
+                            2024
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <button
+                    class="btn-search"
+                    onclick="loadLuong()">
+
+                    🔍 Tìm kiếm
+
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- TỔNG QUAN -->
+        <div class="summary">
+
+            <div class="summary-card">
+
+                <small>
+                    Tổng số bảng lương
+                </small>
+
+                <h2 id="tongBangLuong">
+                    0
+                </h2>
+
+            </div>
+
+
+            <div class="summary-card">
+
+                <small>
+                    Tổng tiền thực lĩnh
+                </small>
+
+                <h2 id="tongThucLinh">
+                    0 VNĐ
+                </h2>
+
+            </div>
+
+
+            <div class="summary-card highlight">
+
+                <small>
+                    Bảng lương gần nhất
+                </small>
+
+                <h2 id="luongGanNhat">
+                    0 VNĐ
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        <!-- BẢNG -->
+        <div class="table-card">
+
+            <h3>
+                Danh sách bảng lương
+            </h3>
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            STT
+                        </th>
+
+                        <th>
+                            Tháng
+                        </th>
+
+                        <th>
+                            Năm
+                        </th>
+
+                        <th>
+                            Lương cơ bản
+                        </th>
+
+                        <th>
+                            Phụ cấp
+                        </th>
+
+                        <th>
+                            Thưởng
+                        </th>
+
+                        <th>
+                            Khấu trừ
+                        </th>
+
+                        <th>
+                            Thực lĩnh
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody id="tbodyLuong">
+
+                    <tr>
+
+                        <td colspan="8"
+                            class="empty">
+
+                            Đang tải dữ liệu...
+
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+
+            <!-- PHÂN TRANG -->
+            <div class="pagination"
+                 id="pagination">
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <footer>
+
+        © 2026 HRManager - Hệ thống quản lý nhân sự
+
+    </footer>
+
+
+    <script>
+
+        const API = "http://127.0.0.1:8000";
+
+        const user =
+            JSON.parse(
+                localStorage.getItem("user")
+            );
+
+
+        let currentPage = 1;
+
+        const limit = 10;
+
+
+        // Kiểm tra đăng nhập
+        if (!user) {
+
+            window.location.href =
+                "login.html";
+
+        }
+
+
+        async function loadLuong(page = 1) {
+
+            if (!user || !user.MaNhanVien) {
+
+                document.getElementById(
+                    "tbodyLuong"
+                ).innerHTML = `
+                    <tr>
+                        <td colspan="8" class="empty">
+                            Tài khoản chưa được liên kết với nhân viên.
+                        </td>
+                    </tr>
+                `;
+
+                return;
+
+            }
+
+
+            currentPage = page;
+
+
+            const thang =
+                document.getElementById("thang").value;
+
+            const nam =
+                document.getElementById("nam").value;
+
+
+            let url =
+                `${API}/api/bangluong/?` +
+                `maNhanVien=${user.MaNhanVien}` +
+                `&page=${page}` +
+                `&limit=${limit}`;
+
+
+            if (thang) {
+
+                url += `&thang=${thang}`;
+
+            }
+
+
+            if (nam) {
+
+                url += `&nam=${nam}`;
+
+            }
+
+
+            try {
+
+                const response =
+                    await fetch(url);
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        "Không lấy được bảng lương"
+                    );
+
+                }
+
+
+                const result =
+                    await response.json();
+
+
+                const data =
+                    result.data || [];
+
+
+                hienThiBangLuong(data);
+
+                hienThiThongKe(data, result.total);
+
+                hienThiPhanTrang(
+                    result.totalPages || 1
+                );
+
+            }
+            catch (error) {
+
+                console.error(error);
+
+                document.getElementById(
+                    "tbodyLuong"
+                ).innerHTML = `
+                    <tr>
+                        <td colspan="8" class="empty">
+                            Không thể kết nối đến API bảng lương.
+                        </td>
+                    </tr>
+                `;
+
+            }
+
+        }
+
+
+        function hienThiBangLuong(data) {
+
+            const tbody =
+                document.getElementById(
+                    "tbodyLuong"
+                );
+
+
+            if (!data.length) {
+
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="8" class="empty">
+                            Chưa có dữ liệu bảng lương.
+                        </td>
+                    </tr>
+                `;
+
+                return;
+
+            }
+
+
+            tbody.innerHTML =
+                data.map((item, index) => {
+
+                    const thucLinh =
+                        Number(item.LuongCoBan || 0)
+                        + Number(item.PhuCap || 0)
+                        + Number(item.Thuong || 0)
+                        - Number(item.KhauTru || 0);
+
+
+                    return `
+
+                        <tr>
+
+                            <td>
+                                ${(currentPage - 1) * limit
+                                + index + 1}
+                            </td>
+
+                            <td>
+                                ${item.Thang}
+                            </td>
+
+                            <td>
+                                ${item.Nam}
+                            </td>
+
+                            <td class="money">
+                                ${formatMoney(item.LuongCoBan)}
+                            </td>
+
+                            <td class="money">
+                                ${formatMoney(item.PhuCap)}
+                            </td>
+
+                            <td class="money">
+                                ${formatMoney(item.Thuong)}
+                            </td>
+
+                            <td class="money">
+                                ${formatMoney(item.KhauTru)}
+                            </td>
+
+                            <td class="money total-money">
+                                ${formatMoney(thucLinh)}
+                            </td>
+
+                        </tr>
+
+                    `;
+
+                }).join("");
+
+        }
+
+
+        function hienThiThongKe(data, total) {
+
+            document.getElementById(
+                "tongBangLuong"
+            ).innerText = total || 0;
+
+
+            let tong =
+                data.reduce(
+                    (sum, item) => {
+
+                        const thucLinh =
+                            Number(item.LuongCoBan || 0)
+                            + Number(item.PhuCap || 0)
+                            + Number(item.Thuong || 0)
+                            - Number(item.KhauTru || 0);
+
+                        return sum + thucLinh;
+
+                    },
+                    0
+                );
+
+
+            document.getElementById(
+                "tongThucLinh"
+            ).innerText =
+                formatMoney(tong);
+
+
+            if (data.length > 0) {
+
+                const ganNhat =
+                    data[0];
+
+
+                const tien =
+                    Number(ganNhat.LuongCoBan || 0)
+                    + Number(ganNhat.PhuCap || 0)
+                    + Number(ganNhat.Thuong || 0)
+                    - Number(ganNhat.KhauTru || 0);
+
+
+                document.getElementById(
+                    "luongGanNhat"
+                ).innerText =
+                    formatMoney(tien);
+
+            }
+            else {
+
+                document.getElementById(
+                    "luongGanNhat"
+                ).innerText =
+                    "0 VNĐ";
+
+            }
+
+        }
+
+
+        function hienThiPhanTrang(totalPages) {
+
+            const pagination =
+                document.getElementById(
+                    "pagination"
+                );
+
+
+            pagination.innerHTML = "";
+
+
+            if (totalPages <= 1) {
+
+                return;
+
+            }
+
+
+            for (
+                let i = 1;
+                i <= totalPages;
+                i++
+            ) {
+
+                const button =
+                    document.createElement(
+                        "button"
+                    );
+
+
+                button.innerText = i;
+
+
+                if (i === currentPage) {
+
+                    button.classList.add(
+                        "active"
+                    );
+
+                }
+
+
+                button.onclick = function () {
+
+                    loadLuong(i);
+
+                };
+
+
+                pagination.appendChild(
+                    button
+                );
+
+            }
+
+        }
+
+
+        function formatMoney(number) {
+
+            return Number(number || 0)
+                .toLocaleString("vi-VN")
+                + " VNĐ";
+
+        }
+
+
+        function dangXuat() {
+
+            localStorage.removeItem(
+                "user"
+            );
+
+            window.location.href =
+                "login.html";
+
+        }
+
+
+        // Tải dữ liệu ngay khi mở trang
+        loadLuong();
+
+    </script>
+
+</body>
+</html>
